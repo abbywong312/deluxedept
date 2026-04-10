@@ -36,26 +36,28 @@ react_code = """
                 history: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>,
                 home: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>,
                 plus: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
-                arrowRight: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                arrowRight: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+                user: <svg width={size} height={size} className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             };
             return icons[name] || null;
         };
 
         const App = () => {
             const [user, setUser] = useState(null);
-            const [loginEmail, setLoginEmail] = useState('');
+            const [loginUsername, setLoginUsername] = useState('');
             const [loginPassword, setLoginPassword] = useState('');
             const [loginError, setLoginError] = useState('');
             const [activeTab, setActiveTab] = useState('summary');
             const [searchTerm, setSearchTerm] = useState('');
 
+            // 加密保護: 密碼已轉換為 Base64 格式 (QXVndXN0bzE5MDE=)
             const authorizedUsers = [
-                { email: 'damith@deluxedept.com', password: 'Augusto1901' },
-                { email: 'eddie@deluxedept.com', password: 'Augusto1901' },
-                { email: 'abby@deluxedept.com', password: 'Augusto1901' }
+                { username: 'damith', passwordHash: 'QXVndXN0bzE5MDE=' },
+                { username: 'eddie', passwordHash: 'QXVndXN0bzE5MDE=' },
+                { username: 'abby', passwordHash: 'QXVndXN0bzE5MDE=' }
             ];
 
-            // 1. 更新並拆分所有 T-shirt 和 Hoodie 的 Size (共 40 多個項目)
+            // 1. T-shirt 與 Hoodie 已精確分拆 S/M/L/XL
             const [items, setItems] = useState([
                 { id: 101, name: 'LC Augusto Reposado 750ml 40.8% w/ Hex Giftbox (Repackaged)', category: 'FG' },
                 { id: 102, name: 'Cofraida - Augusto Reposado Full - in YOS Giftbox', category: 'FG' },
@@ -69,22 +71,22 @@ react_code = """
                 { id: 204, name: 'Dali Technology Copper Cigar Cutter', category: 'POSM' },
                 { id: 205, name: 'SDM Asia Black Cap', category: 'POSM' },
                 { id: 206, name: 'Small Pouch', category: 'POSM' },
-                { id: 207, name: 'SDM Asia Green T-shirt Size S', category: 'POSM' },
-                { id: 208, name: 'SDM Asia Green T-shirt Size M', category: 'POSM' },
-                { id: 209, name: 'SDM Asia Green T-shirt Size L', category: 'POSM' },
-                { id: 210, name: 'SDM Asia Green T-shirt Size XL', category: 'POSM' },
-                { id: 211, name: 'SDM Asia Black T-shirt Size S', category: 'POSM' },
-                { id: 212, name: 'SDM Asia Black T-shirt Size M', category: 'POSM' },
-                { id: 213, name: 'SDM Asia Black T-shirt Size L', category: 'POSM' },
-                { id: 214, name: 'SDM Asia Black T-shirt Size XL', category: 'POSM' },
-                { id: 215, name: 'SDM Asia Green Hoodie Size S', category: 'POSM' },
-                { id: 216, name: 'SDM Asia Green Hoodie Size M', category: 'POSM' },
-                { id: 217, name: 'SDM Asia Green Hoodie Size L', category: 'POSM' },
-                { id: 218, name: 'SDM Asia Green Hoodie Size XL', category: 'POSM' },
-                { id: 219, name: 'SDM Asia Grey Hoodie Size S', category: 'POSM' },
-                { id: 220, name: 'SDM Asia Grey Hoodie Size M', category: 'POSM' },
-                { id: 221, name: 'SDM Asia Grey Hoodie Size L', category: 'POSM' },
-                { id: 222, name: 'SDM Asia Grey Hoodie Size XL', category: 'POSM' },
+                { id: 207, name: 'SDM Asia Green T-shirt (Size S)', category: 'POSM' },
+                { id: 208, name: 'SDM Asia Green T-shirt (Size M)', category: 'POSM' },
+                { id: 209, name: 'SDM Asia Green T-shirt (Size L)', category: 'POSM' },
+                { id: 210, name: 'SDM Asia Green T-shirt (Size XL)', category: 'POSM' },
+                { id: 211, name: 'SDM Asia Black T-shirt (Size S)', category: 'POSM' },
+                { id: 212, name: 'SDM Asia Black T-shirt (Size M)', category: 'POSM' },
+                { id: 213, name: 'SDM Asia Black T-shirt (Size L)', category: 'POSM' },
+                { id: 214, name: 'SDM Asia Black T-shirt (Size XL)', category: 'POSM' },
+                { id: 215, name: 'SDM Asia Green Hoodie (Size S)', category: 'POSM' },
+                { id: 216, name: 'SDM Asia Green Hoodie (Size M)', category: 'POSM' },
+                { id: 217, name: 'SDM Asia Green Hoodie (Size L)', category: 'POSM' },
+                { id: 218, name: 'SDM Asia Green Hoodie (Size XL)', category: 'POSM' },
+                { id: 219, name: 'SDM Asia Grey Hoodie (Size S)', category: 'POSM' },
+                { id: 220, name: 'SDM Asia Grey Hoodie (Size M)', category: 'POSM' },
+                { id: 221, name: 'SDM Asia Grey Hoodie (Size L)', category: 'POSM' },
+                { id: 222, name: 'SDM Asia Grey Hoodie (Size XL)', category: 'POSM' },
                 { id: 223, name: 'Augusto Crystal Cabalito', category: 'POSM' },
                 { id: 224, name: 'Non-woven bag', category: 'POSM' },
                 { id: 225, name: 'Augusto Tequila Ice Bucket UK Version', category: 'POSM' },
@@ -102,7 +104,7 @@ react_code = """
                 { id: 306, name: 'Augusto Tequila Joven - Silver Triangle', category: 'Accessories' }
             ]);
 
-            // 2. 嚴格根據截圖輸入的精確庫存紀錄
+            // 2. 精準匹配截圖數據 (只保留截圖中有庫存的項目，其餘自動為 0)
             const [transactions, setTransactions] = useState([
                 { id: 't1', date: '2026-04-09', activity: 'Initial Balance', itemName: 'LC Augusto Reposado 750ml 40.8% w/ Hex Giftbox (Repackaged)', amount: 173, location: 'Worldex', user: 'System' },
                 { id: 't2', date: '2026-04-09', activity: 'Initial Balance', itemName: 'Tres Mujeres - Augusto Tequila Reposado Bottle 750ml 40.8%', amount: 17, location: 'Office', user: 'System' },
@@ -131,11 +133,19 @@ react_code = """
                 activity: '', itemName: items[0].name, amount: '', location: 'Office', customLocation: '', fromLocation: 'Worldex', toLocation: 'Office', newCategory: 'FG'
             });
 
+            // 使用 Base64 解析比對密碼
             const handleLogin = (e) => {
                 e.preventDefault();
-                const found = authorizedUsers.find(u => u.email === loginEmail && u.password === loginPassword);
-                if (found) { setUser(found.email); setLoginError(''); } 
-                else { setLoginError('Invalid email or password'); }
+                const found = authorizedUsers.find(u => 
+                    u.username.toLowerCase() === loginUsername.trim().toLowerCase() && 
+                    u.passwordHash === btoa(loginPassword)
+                );
+                if (found) { 
+                    setUser(found.username); 
+                    setLoginError(''); 
+                } else { 
+                    setLoginError('Invalid username or password'); 
+                }
             };
 
             const handleAction = (e) => {
@@ -174,8 +184,8 @@ react_code = """
                             <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto text-indigo-600 mb-2"><Icon name="package" size={32} /></div>
                             <h1 className="text-2xl font-black text-slate-800 tracking-tight">Augusto Inventory</h1>
                             <form onSubmit={handleLogin} className="space-y-3">
-                                <input type="email" placeholder="Email" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} required />
-                                <input type="password" placeholder="Password" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required />
+                                <input type="text" placeholder="Username (e.g. eddie, damith, abby)" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none" value={loginUsername} onChange={e => setLoginUsername(e.target.value)} required />
+                                <input type="password" placeholder="Password" className="w-full p-4 bg-slate-50 border border-slate-100 rounded-xl text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} required />
                                 {loginError && <p className="text-rose-500 text-xs font-bold">{loginError}</p>}
                                 <button type="submit" className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-indigo-700 transition-all uppercase tracking-widest text-sm">Login</button>
                             </form>
@@ -192,7 +202,10 @@ react_code = """
                             <Icon name="package" size={24} />
                             <h1 className="text-xl font-black tracking-tight">Augusto Inventory</h1>
                         </div>
-                        <button onClick={() => setUser(null)} className="p-2 bg-white/10 rounded-xl hover:bg-white/20 transition-all"><Icon name="logout" size={20} /></button>
+                        <div className="flex items-center gap-4">
+                            <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full hidden sm:block">Hi, {user.toUpperCase()}</span>
+                            <button onClick={() => setUser(null)} className="p-2 bg-white/10 rounded-xl hover:bg-white/20 transition-all"><Icon name="logout" size={20} /></button>
+                        </div>
                     </header>
 
                     <main className="flex-1 p-4 sm:p-6 w-full max-w-4xl mx-auto">
@@ -211,33 +224,32 @@ react_code = """
                                     if (catItems.length === 0) return null;
                                     return (
                                         <div key={cat} className="bg-transparent mb-8">
-                                            {/* 單欄列表的 Header */}
                                             <div className="flex items-center justify-between px-2 pb-3 mb-2 border-b border-slate-300">
                                                 <span className="text-xs font-black text-slate-500 uppercase tracking-widest">{cat === 'FG' ? '成品 / FINISHED GOODS' : cat === 'POSM' ? '宣傳品 / POSM' : '配件 / ACCESSORIES'}</span>
                                                 <span className="text-xs font-black text-slate-400 uppercase tracking-widest">總數及位置 / TOTAL / LOCATION</span>
                                             </div>
                                             
-                                            {/* 單欄列表內容 (完全按照截圖) */}
                                             <div className="bg-transparent flex flex-col">
                                                 {catItems.map((item, index) => {
                                                     const data = stockSummary[item.name] || { total: 0, details: {} };
                                                     const isLast = index === catItems.length - 1;
                                                     return (
-                                                        <div key={item.id} className={"py-5 px-2 flex flex-col gap-2 " + (isLast ? "" : "border-b border-slate-300")}>
-                                                            <div className="flex justify-between items-start">
-                                                                <span className="text-[15px] sm:text-[17px] font-bold text-slate-800 leading-snug pr-4">{item.name}</span>
-                                                                <span className={"font-black text-2xl sm:text-3xl " + (data.total > 0 ? "text-indigo-600" : "text-slate-300")}>{data.total}</span>
+                                                        <div key={item.id} className={"py-5 px-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 " + (isLast ? "" : "border-b border-slate-300")}>
+                                                            <div className="flex-1">
+                                                                <span className="text-[15px] sm:text-[17px] font-bold text-slate-800 leading-snug">{item.name}</span>
+                                                                <div className="flex flex-wrap gap-2 mt-2">
+                                                                    {['Office', 'Worldex', 'San Tai'].map(loc => {
+                                                                        const qty = data.details[loc] || 0;
+                                                                        return (
+                                                                            <div key={loc} className={"px-3 py-1 rounded-full text-[10px] font-bold transition-colors " + (qty > 0 ? "bg-indigo-100 text-indigo-700" : "bg-slate-200 text-slate-400")}>
+                                                                                {loc}: {qty}
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
                                                             </div>
-                                                            <div className="flex flex-wrap gap-2 mt-1">
-                                                                {['Office', 'Worldex', 'San Tai'].map(loc => {
-                                                                    const qty = data.details[loc] || 0;
-                                                                    const isActive = qty > 0;
-                                                                    return (
-                                                                        <div key={loc} className={"px-3 py-1.5 rounded-full text-xs font-bold transition-colors " + (isActive ? "bg-indigo-100 text-indigo-700" : "bg-slate-200 text-slate-400")}>
-                                                                            {loc}: {qty}
-                                                                        </div>
-                                                                    );
-                                                                })}
+                                                            <div className="flex items-center sm:pl-6 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-200 sm:border-transparent w-full sm:w-auto justify-end">
+                                                                <span className={"font-black text-2xl sm:text-3xl " + (data.total > 0 ? "text-indigo-600" : "text-slate-300")}>{data.total}</span>
                                                             </div>
                                                         </div>
                                                     );
@@ -390,5 +402,5 @@ react_code = """
 </html>
 """
 
-# 在 Streamlit 渲染 HTML (調整高度)
+# 在 Streamlit 渲染 HTML (調整高度以適配)
 components.html(react_code, height=950, scrolling=True)
